@@ -1,6 +1,6 @@
 # MAPI Methods
 
-MAPILib provides two types of methods for most operations. 
+MAPILib provides two types of methods for most operations: methods that return an MAPIResult, and then general convenience methods.
 
 ## MAPIResult Methods
 
