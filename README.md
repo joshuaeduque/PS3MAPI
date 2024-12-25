@@ -27,7 +27,7 @@ uint? pid = api.GetCurrentProcessId();
 
 // Read four bytes from the current process
 uint address = 0x10000;
-uint size = 0x04;
+uint size = 4;
 
 byte[]? memory = api.GetMemory(pid, address, size);
 ```
