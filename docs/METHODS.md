@@ -57,7 +57,9 @@ void Disconnect();
 
 ## Usage Examples
 
-Here's what some code to read and write to a process might look like:
+Here's a few example of how to you may want to use MAPILib:
+
+### Read / write memory
 
 ```C#
 // Get the ip address of the console you'd like to connect to
@@ -123,4 +125,48 @@ if(writeRes != MAPIResult.OK) {
 Console.WriteLine("Wrote to memory");
 
 // We're done!
+```
+
+### Get firmware version and temperature
+
+```C#
+// Get the ip address of the console you'd like to connect to
+string ipAddress = "192.168.1.13";
+
+// Create an MAPI object
+MAPI api = new MAPI();
+
+// Try connecting to the console
+MAPIResult connectRes = api.Connect(ipAddress);
+
+// Check the result of the connect call
+if(connectRes != MAPIResult.OK) {
+    // If the MAPIResult returned by Connect() is not OK, connection must have failed
+    Console.WriteLine($"Failed to connect to {ipAddress}");
+    return;
+}
+
+Console.WriteLine($"Connected to {ipAddress}");
+
+// Try getting the console's firmware version
+string? firmwareVer = api.GetFirmwareVersion();
+
+// Check the result of the call
+if(firmwareVer == null) {
+    Console.WriteLine("Failed to get firmware version");
+    return;
+}
+
+Console.WriteLine($"Got firmware version {firmwareVer}");
+
+// Try getting the console's temperature
+MAPIResult temperatureRes = api.GetTemperature(out int cpu, out int rsx);
+
+// Check the result of the call
+if(temperatureRes != MAPIResult.OK) {
+    Console.WriteLine("Failed to get temperature");
+    return;
+}
+
+Console.WriteLine($"Console temperature cpu {cpu} rsx {rsx}");
 ```
