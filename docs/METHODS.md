@@ -115,11 +115,12 @@ MAPIResult writeRes = api.SetMemory(pid, address, writeBuf);
 
 // Check the result of the write call
 if(writeRes != MAPIResult.OK) {
-    // If the call result is not OK, it must have failed+
+    // If the call result is not OK, it must have failed
     Console.WriteLine("Failed to write memory");
     return;
 }
 
 Console.WriteLine("Wrote to memory");
 
+// We're done!
 ```
