@@ -127,6 +127,46 @@ Console.WriteLine("Wrote to memory");
 // We're done!
 ```
 
+### Execute a syscall
+
+```C#
+// Get the ip address of the console you'd like to connect to
+string ipAddress = "192.168.1.13";
+
+// Create an MAPI object
+MAPI api = new MAPI();
+
+// Try connecting to the console
+MAPIResult connectRes = api.Connect(ipAddress);
+
+// Check the result of the connect call
+if(connectRes != MAPIResult.OK) {
+    // If the MAPIResult returned by Connect() is not OK, connection must have failed
+    Console.WriteLine($"Failed to connect to {ipAddress}");
+    return;
+}
+
+Console.WriteLine($"Connected to {ipAddress}");
+
+// Execute a syscall to make the console's power button blink green
+uint syscall = 386; // sys_sm_control_led
+uint ledColor = 1;  // Green
+uint ledMode = 2;   // Blink fast
+
+object[] syscallArgs = new object[] { ledColor, ledMode };
+
+// Try executing the syscall
+uint? syscallRes = api.Syscall(syscall, syscallArgs);
+
+// Check the result of the syscall call
+if(syscallRes == null) {
+    Console.WriteLine("Failed to execute syscall");
+    return;
+}
+
+Console.WriteLine("Executed syscall");
+```
+
 ### Get firmware version and temperature
 
 ```C#
