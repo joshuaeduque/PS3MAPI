@@ -19,6 +19,7 @@ string ipAddress = "192.168.1.13";
 
 // Create an MAPI object 
 MAPI api = new MAPI();
+
 // Connect the api to the console with the ip address
 api.Connect(ipAddress);
 
