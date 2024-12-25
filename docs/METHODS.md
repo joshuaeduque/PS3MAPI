@@ -59,8 +59,7 @@ void Disconnect();
 
 Here's a few example of how to you may want to use MAPILib:
 
-### Read / write memory
-
+### Connect to a console
 ```C#
 // Get the ip address of the console you'd like to connect to
 string ipAddress = "192.168.1.13";
@@ -79,6 +78,13 @@ if(connectRes != MAPIResult.OK) {
 }
 
 Console.WriteLine($"Connected to {ipAddress}");
+```
+
+### Read / write memory
+
+```C#
+// Connect to a console
+...
 
 // Try getting the current process id
 uint? pid = api.GetCurrentProcessId();
@@ -130,23 +136,8 @@ Console.WriteLine("Wrote to memory");
 ### Execute a syscall
 
 ```C#
-// Get the ip address of the console you'd like to connect to
-string ipAddress = "192.168.1.13";
-
-// Create an MAPI object
-MAPI api = new MAPI();
-
-// Try connecting to the console
-MAPIResult connectRes = api.Connect(ipAddress);
-
-// Check the result of the connect call
-if(connectRes != MAPIResult.OK) {
-    // If the MAPIResult returned by Connect() is not OK, connection must have failed
-    Console.WriteLine($"Failed to connect to {ipAddress}");
-    return;
-}
-
-Console.WriteLine($"Connected to {ipAddress}");
+// Connect to a console
+...
 
 // Execute a syscall to make the console's power button blink green
 uint syscall = 386; // sys_sm_control_led
@@ -170,23 +161,8 @@ Console.WriteLine("Executed syscall");
 ### Get firmware version and temperature
 
 ```C#
-// Get the ip address of the console you'd like to connect to
-string ipAddress = "192.168.1.13";
-
-// Create an MAPI object
-MAPI api = new MAPI();
-
-// Try connecting to the console
-MAPIResult connectRes = api.Connect(ipAddress);
-
-// Check the result of the connect call
-if(connectRes != MAPIResult.OK) {
-    // If the MAPIResult returned by Connect() is not OK, connection must have failed
-    Console.WriteLine($"Failed to connect to {ipAddress}");
-    return;
-}
-
-Console.WriteLine($"Connected to {ipAddress}");
+// Connect to a console
+...
 
 // Try getting the console's firmware version
 string? firmwareVer = api.GetFirmwareVersion();
