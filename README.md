@@ -36,4 +36,5 @@ byte[]? memory = api.GetMemory(pid, address, size);
 ### Documentation
 If you'd like to learn more about using MAPILib, you can find some documentation here:
 
-[MAPILib Methods](/docs/METHODS.md)
+* [MAPI Methods](/docs/METHODS.md)
+* [Usage Examples](/docs/EXAMPLES.md)
