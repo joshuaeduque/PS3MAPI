@@ -36,7 +36,7 @@ MAPIResult GetMemory(uint processId, uint address, uint size, out byte[]? buffer
 MAPIResult SetMemory(uint processId, uint address, byte[] buffer)
 MAPIResult Syscall(uint number, object[] args, out ulong? result)
 MAPIResult GetFirmwareVersion(out string? version)
-MAPIResult GetTemperature(out int cpu, out int rsx)
+MAPIResult GetTemperature(out int? cpu, out int? rsx)
 ```
 
 ## Convenience Methods
@@ -49,7 +49,7 @@ uint[]? GetProcessIds()
 byte[]? GetMemory(uint processId, uint address, uint size)
 ulong? Syscall(uint number, object[] args)
 string? GetFirmwareVersion()
-(int cpu, int rsx) GetTemperature()
+(int? cpu, int? rsx) GetTemperature()
 ```
 
 Finally, while it's not quite a convenience method, there is also the disconnect method.

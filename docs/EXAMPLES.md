@@ -119,7 +119,7 @@ if(firmwareVer == null) {
 Console.WriteLine($"Got firmware version {firmwareVer}");
 
 // Try getting the console's temperature
-MAPIResult temperatureRes = api.GetTemperature(out int cpu, out int rsx);
+MAPIResult temperatureRes = api.GetTemperature(out int? cpu, out int? rsx);
 
 // Check the result of the call
 if(temperatureRes != MAPIResult.OK) {
