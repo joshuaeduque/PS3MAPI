@@ -1,7 +1,4 @@
-﻿using System.Formats.Asn1;
-using System.Net.Sockets;
-
-namespace MAPILib
+﻿namespace MAPILib
 {
     public class MAPI
     {
@@ -17,6 +14,12 @@ namespace MAPILib
             Connected = false;
         }
 
+        /// <summary>
+        /// Connect to an MAPI server host.
+        /// </summary>
+        /// <param name="host">The IP address of the MAPI server host</param>
+        /// <param name="port">The port number of the MAPI server (7887 by default).</param>
+        /// <returns></returns>
         public MAPIResult Connect(string host, int port = DEFAULT_PORT)
         {
             MAPIResult connectResult = Client.Connect(host, port);
@@ -27,12 +30,20 @@ namespace MAPILib
             return connectResult;
         }
 
+        /// <summary>
+        /// Disconnect from the host.
+        /// </summary>
         public void Disconnect()
         {
             Client.Disconnect();
             Connected = false;
         }
 
+        /// <summary>
+        /// Get the currently running process ID of the host.
+        /// </summary>
+        /// <param name="processId"></param>
+        /// <returns></returns>
         public MAPIResult GetCurrentProcessId(out uint? processId)
         {
             MAPIResult getProcIdResult = Client.GetCurrentProcessId(out uint? outProcessId);
@@ -40,12 +51,21 @@ namespace MAPILib
             return getProcIdResult;
         }
 
+        /// <summary>
+        /// Get the currently running process ID of the host.
+        /// </summary>
+        /// <returns>The currently running process ID of the host or null upon failure.</returns>
         public uint? GetCurrentProcessId()
         {
             GetCurrentProcessId(out uint? currentPid);
             return currentPid;
         }
 
+        /// <summary>
+        /// Get an array of running process IDs on the host.
+        /// </summary>
+        /// <param name="processIds"></param>
+        /// <returns></returns>
         public MAPIResult GetProcessIds(out uint[]? processIds)
         {
             MAPIResult result = Client.GetProcessIds(out uint[]? outProcessIds);
@@ -53,12 +73,24 @@ namespace MAPILib
             return result;
         }
 
+        /// <summary>
+        /// Get an array of running process IDs on the host.
+        /// </summary>
+        /// <returns>An array of running process IDs on the host or null upon failure.</returns>
         public uint[]? GetProcessIds()
         {
             GetProcessIds(out uint[]? processIds);
             return processIds;
         }
 
+        /// <summary>
+        /// Read an array of bytes from a host process.
+        /// </summary>
+        /// <param name="processId">The ID of the process.</param>
+        /// <param name="address">The address in the process.</param>
+        /// <param name="size">The number of bytes to read.</param>
+        /// <param name="buffer">The resulting array of bytes from the read operation.</param>
+        /// <returns></returns>
         public MAPIResult GetMemory(uint processId, uint address, uint size, out byte[]? buffer)
         {
             MAPIResult getMemoryResult = Client.GetMemory(processId, address, size, out byte[]? outBuffer);
@@ -66,18 +98,39 @@ namespace MAPILib
             return getMemoryResult;
         }
 
+        /// <summary>
+        /// Read an array of bytes from a host process.
+        /// </summary>
+        /// <param name="processId">The ID of the process.</param>
+        /// <param name="address">The address in the process.</param>
+        /// <param name="size">The number of bytes to read.</param>
+        /// <returns>An array of bytes from the read operation or null upon failure.</returns>
         public byte[]? GetMemory(uint processId, uint address, uint size)
         {
             GetMemory(processId, address, size, out byte[]? buffer);
             return buffer;
         }
 
+        /// <summary>
+        /// Write an array of bytes into a host process.
+        /// </summary>
+        /// <param name="processId">The ID of the process.</param>
+        /// <param name="address">The address in the process.</param>
+        /// <param name="buffer">The array of bytes to write.</param>
+        /// <returns></returns>
         public MAPIResult SetMemory(uint processId, uint address, byte[] buffer)
         {
             MAPIResult setMemoryResult = Client.SetMemory(processId, address, buffer);
             return setMemoryResult;
         }
 
+        /// <summary>
+        /// Execute a syscall on the host.
+        /// </summary>
+        /// <param name="number">The syscall number.</param>
+        /// <param name="args">The arguments of the syscall.</param>
+        /// <param name="result">The returned value of the syscall execution.</param>
+        /// <returns></returns>
         public MAPIResult Syscall(uint number, object[] args, out ulong? result)
         {
             MAPIResult syscallResult = Client.Syscall(number, args, out ulong? outResult);
@@ -85,6 +138,12 @@ namespace MAPILib
             return syscallResult;
         }
 
+        /// <summary>
+        /// Execute a syscall on the host.
+        /// </summary>
+        /// <param name="number">The syscall number.</param>
+        /// <param name="args">The arguments of the syscall.</param>
+        /// <returns>The return value of the syscall execution or null upon failure.</returns>
         public ulong? Syscall(uint number, object[] args)
         {
             // NOTE result is nullable because zero is an acceptable syscall result
@@ -92,6 +151,11 @@ namespace MAPILib
             return result;
         }
 
+        /// <summary>
+        /// Get the firmware version of the host.
+        /// </summary>
+        /// <param name="version">The firmware version of the host.</param>
+        /// <returns></returns>
         public MAPIResult GetFirmwareVersion(out string? version)
         {
             MAPIResult result = Client.GetFirmwareVersion(out string? outVersion);
@@ -99,23 +163,37 @@ namespace MAPILib
             return result;
         }
 
+        /// <summary>
+        /// Get the firmware version of the host.
+        /// </summary>
+        /// <returns>The firmware version of the host or null upon failure.</returns>
         public string? GetFirmwareVersion()
         {
             GetFirmwareVersion(out string? version);
             return version;
         }
 
-        public MAPIResult GetTemperature(out int cpu, out int rsx)
+        /// <summary>
+        /// Get the CPU and RSX temperature of the host.
+        /// </summary>
+        /// <param name="cpu"></param>
+        /// <param name="rsx"></param>
+        /// <returns></returns>
+        public MAPIResult GetTemperature(out int? cpu, out int? rsx)
         {
-            MAPIResult result = Client.GetTemperature(out int cpuResult, out int rsxResult);
+            MAPIResult result = Client.GetTemperature(out int? cpuResult, out int? rsxResult);
             cpu = cpuResult;
             rsx = rsxResult;
             return result;
         }
 
-        public (int cpu, int rsx) GetTemperature()
+        /// <summary>
+        /// Get the CPU and RSX temperature of the host.
+        /// </summary>
+        /// <returns>A tuple containing the CPU and RSX temperature of the host or null upon failure.</returns>
+        public (int? cpu, int? rsx) GetTemperature()
         {
-            GetTemperature(out int cpuResult, out int rsxResult);
+            GetTemperature(out int? cpuResult, out int? rsxResult);
             return (cpu: cpuResult, rsx: rsxResult);
         }
     }
