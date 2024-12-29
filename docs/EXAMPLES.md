@@ -2,6 +2,11 @@
 
 Here's a few simple examples showing how you may want to use MAPILib.
 
+* [Connect to a console](#connect-to-a-console)
+* [Read / write memory](#read--write-memory)
+* [Execute a syscall](#execute-a-syscall)
+* [Get firmware version and temperature](#get-firmware-version-and-temperature)
+
 ## Connect to a console
 ```C#
 // Get the ip address of the console you'd like to connect to
