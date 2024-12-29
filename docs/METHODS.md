@@ -1,188 +1,306 @@
-# MAPI Methods
+# MAPILib Methods
 
-MAPILib provides two types of methods for most operations: methods that return an MAPIResult, and then general convenience methods.
+Created by [mddox](https://github.com/loxsmoke/mddox) on 12/28/2024
 
-## MAPIResult Methods
+MAPILib provides two types of methods for most operations:
 
-Methods that return an MAPIResult are useful for debugging or if you're concerned with specific errors.
+1. Methods that return an `MAPIResult`.
+2. Methods that return values directly for convenience.
 
-```C#
-MAPIResult Connect(string host, int port = 7887)
-MAPIResult GetCurrentProcessId(out uint? processId)
-MAPIResult GetProcessIds(out uint[]? processIds)
-MAPIResult GetMemory(uint processId, uint address, uint size, out byte[]? buffer)
-MAPIResult SetMemory(uint processId, uint address, byte[] buffer)
-MAPIResult Syscall(uint number, object[] args, out ulong? result)
-MAPIResult GetFirmwareVersion(out string? version)
-MAPIResult GetTemperature(out int cpu, out int rsx)
-```
+Methods that return an `MAPIResult` are useful for debugging or testing.
 
-An MAPIResult is an enum of different errors that may occur.
+Convenience methods are useful if you're only concerned with success / failure. If a returned value is null or default, it means that the call failed.
 
-```C#
-public enum MAPIResult
-{
-    OK,
-    CONNECT_FAILED,
-    GET_DATASOCKET_FAILED,
-    CONNECT_DATASOCKET_FAILED,
-    SEND_COMMAND_FAILED,
-    WRONG_RESPONSE_CODE,
-    GET_RESPONSE_BUFFER_FAILED,
-    DATASOCKET_SEND_FAILED,
-    PARSE_PID_FAILED,
-    PARSE_SYSCALL_FAILED,
-    PARSE_TEMPERATURE_FAILED
-}
-```
+# All types
 
-## Convenience Methods
+|   |   |   |
+|---|---|---|
+| [MAPI Class](#mapi-class) | [MAPIResult Enum](#mapiresult-enum) |   |
+# MAPI Class
 
-If you're less concerned with error types, you can instead use convenience methods that return values directly.
+Namespace: MAPILib
 
-```C#
-uint? GetCurrentProcessId()
-uint[]? GetProcessIds()
-byte[]? GetMemory(uint processId, uint address, uint size)
-ulong? Syscall(uint number, object[] args)
-string? GetFirmwareVersion()
-(int cpu, int rsx) GetTemperature()
-```
+Class for general MAPI host connection and operations.
 
-While it's not quite a convenience method, we also have
+## Properties
 
-```C#
-void Disconnect();
-```
+| Name | Type | Summary |
+|---|---|---|
+| **Connected** | bool | State of connection to an MAPI host. |
+## Constructors
+
+| Name | Summary |
+|---|---|
+| [MAPI()](#mapi) | Sole constructor for an MAPI object. |
+## Methods
+
+| Name | Returns | Summary |
+|---|---|---|
+| [Connect(string host, int port)](#connectstring-host-int-port) | [MAPIResult](#mapiresult-enum) | Connect to an MAPI server host. |
+| [Disconnect()](#disconnect) | void | Disconnect from the host. |
+| [GetCurrentProcessId()](#getcurrentprocessid) | uint? | Get the currently running process ID of the host. |
+| [GetCurrentProcessId(out uint? processId)](#getcurrentprocessidout-uint--processid) | [MAPIResult](#mapiresult-enum) | Get the currently running process ID of the host. |
+| [GetFirmwareVersion()](#getfirmwareversion) | string | Get the firmware version of the host. |
+| [GetFirmwareVersion(out string version)](#getfirmwareversionout-string-version) | [MAPIResult](#mapiresult-enum) | Get the firmware version of the host. |
+| [GetMemory(uint processId, uint address, uint size)](#getmemoryuint-processid-uint-address-uint-size) | byte[] | Read an array of bytes from a host process. |
+| [GetMemory(uint processId, uint address, uint size, out byte[] buffer)](#getmemoryuint-processid-uint-address-uint-size-out-byte-buffer) | [MAPIResult](#mapiresult-enum) | Read an array of bytes from a host process. |
+| [GetProcessIds()](#getprocessids) | uint[] | Get an array of running process IDs on the host. |
+| [GetProcessIds(out uint[] processIds)](#getprocessidsout-uint-processids) | [MAPIResult](#mapiresult-enum) | Get an array of running process IDs on the host. |
+| [GetTemperature()](#gettemperature) | (int? cpu, int? rsx) | Get the CPU and RSX temperature of the host. |
+| [GetTemperature(out int? cpu, out int? rsx)](#gettemperatureout-int--cpu-out-int--rsx) | [MAPIResult](#mapiresult-enum) | Get the CPU and RSX temperature of the host. |
+| [SetMemory(uint processId, uint address, byte[] buffer)](#setmemoryuint-processid-uint-address-byte-buffer) | [MAPIResult](#mapiresult-enum) | Write an array of bytes into a host process. |
+| [Syscall(uint number, Object[] args)](#syscalluint-number-object-args) | ulong? | Execute a syscall on the host. |
+| [Syscall(uint number, Object[] args, out ulong? result)](#syscalluint-number-object-args-out-ulong--result) | [MAPIResult](#mapiresult-enum) | Execute a syscall on the host. |
+## Constructors
+
+### MAPI()
+
+Sole constructor for an MAPI object.
+
+
+
+## Methods
+
+### Connect(string host, int port)
+
+Connect to an MAPI server host.
+
+| Parameter | Type | Description |
+|---|---|---|
+| host | string | The IP address of the MAPI server host. |
+| port | int | The port number of the MAPI server (7887 by default). |
+
+
+### Returns
+
+[MAPIResult](#mapiresult-enum)
+
+An MAPIResult for the API call.
+
+### Disconnect()
+
+Disconnect from the host.
+
+
+
+### GetCurrentProcessId()
+
+Get the currently running process ID of the host.
+
+
+
+### Returns
+
+uint?
+
+A uint of the currently running process ID on the host or null upon failure.
+
+### GetCurrentProcessId(out uint? processId)
+
+Get the currently running process ID of the host.
+
+| Parameter | Type | Description |
+|---|---|---|
+| processId | out uint? | A uint of the currently running process ID on the host or null upon failure. |
+
+
+### Returns
+
+[MAPIResult](#mapiresult-enum)
+
+An MAPIResult for the API call.
+
+### GetFirmwareVersion()
+
+Get the firmware version of the host.
+
+
+
+### Returns
+
+string
+
+A string containing the host's firmware version or null upon failure.
+
+### GetFirmwareVersion(out string version)
+
+Get the firmware version of the host.
+
+| Parameter | Type | Description |
+|---|---|---|
+| version | out string | A string containing the host's firmware version or null upon failure. |
+
+
+### Returns
+
+[MAPIResult](#mapiresult-enum)
+
+An MAPIResult for the API call.
+
+### GetMemory(uint processId, uint address, uint size)
+
+Read an array of bytes from a host process.
+
+| Parameter | Type | Description |
+|---|---|---|
+| processId | uint | The ID of the process. |
+| address | uint | The address in the process. |
+| size | uint | The number of bytes to read. |
+
+
+### Returns
+
+byte[]
+
+A byte array containing memory read from the process or null upon failure.
+
+### GetMemory(uint processId, uint address, uint size, out byte[] buffer)
+
+Read an array of bytes from a host process.
+
+| Parameter | Type | Description |
+|---|---|---|
+| processId | uint | The ID of the process. |
+| address | uint | The address in the process. |
+| size | uint | The number of bytes to read. |
+| buffer | out byte[] | A byte array containing memory read from the process or null upon failure. |
+
+
+### Returns
+
+[MAPIResult](#mapiresult-enum)
+
+An MAPIResult for the API call.
+
+### GetProcessIds()
+
+Get an array of running process IDs on the host.
+
+
+
+### Returns
+
+uint[]
+
+An array of uints containing process IDs running on the host or null upon failure.
+
+### GetProcessIds(out uint[] processIds)
+
+Get an array of running process IDs on the host.
+
+| Parameter | Type | Description |
+|---|---|---|
+| processIds | out uint[] | An array of uints containing process IDs running on the host or null upon failure. |
+
+
+### Returns
+
+[MAPIResult](#mapiresult-enum)
+
+An MAPIResult for the API call.
+
+### GetTemperature()
+
+Get the CPU and RSX temperature of the host.
+
+
+
+### Returns
+
+(int? cpu, int? rsx)
+
+A tuple containing the CPU and RSX temperature of the host or null upon failure.
+
+### GetTemperature(out int? cpu, out int? rsx)
+
+Get the CPU and RSX temperature of the host.
+
+| Parameter | Type | Description |
+|---|---|---|
+| cpu | out int? |  |
+| rsx | out int? |  |
+
+
+### Returns
+
+[MAPIResult](#mapiresult-enum)
+
+An MAPIResult for the API call.
+
+### SetMemory(uint processId, uint address, byte[] buffer)
+
+Write an array of bytes into a host process.
+
+| Parameter | Type | Description |
+|---|---|---|
+| processId | uint | The ID of the process. |
+| address | uint | The address in the process. |
+| buffer | byte[] | The array of bytes to write. |
+
+
+### Returns
+
+[MAPIResult](#mapiresult-enum)
+
+An MAPIResult for the API call.
+
+### Syscall(uint number, Object[] args)
+
+Execute a syscall on the host.
+
+| Parameter | Type | Description |
+|---|---|---|
+| number | uint | The syscall number. |
+| args | Object[] | The arguments of the syscall. |
+
+
+### Returns
+
+ulong?
+
+A ulong of the syscall's execution return value or null upon failure.
+
+### Syscall(uint number, Object[] args, out ulong? result)
+
+Execute a syscall on the host.
+
+| Parameter | Type | Description |
+|---|---|---|
+| number | uint | The syscall number. |
+| args | Object[] | The arguments of the syscall. |
+| result | out ulong? | A ulong of the syscall's execution return value or null upon failure. |
+
+
+### Returns
+
+[MAPIResult](#mapiresult-enum)
+
+An MAPIResult for the API call.
+
+# MAPIResult Enum
+
+Namespace: MAPILib
+
+Enum describing the result of an MAPI operation state.
+
+## Values
+
+| Name | Summary |
+|---|---|
+| **OK** | Operation completed successfully. |
+| **CONNECT_FAILED** | Connect operation failed. |
+| **GET_DATASOCKET_FAILED** | Retrieval of a data socket for data operations failed. |
+| **CONNECT_DATASOCKET_FAILED** | Connection to a data socket for data operations failed. |
+| **SEND_COMMAND_FAILED** | Failed to send a command to the host. |
+| **WRONG_RESPONSE_CODE** | Host returned an unexpected response code for a command. |
+| **GET_RESPONSE_BUFFER_FAILED** | Data socket failed to retrieve data buffer. |
+| **DATASOCKET_SEND_FAILED** | Data socket failed to send data buffer. |
+| **PARSE_PID_FAILED** | Failed to parse a process ID command response. |
+| **PARSE_SYSCALL_FAILED** | Failed to parse a syscall command response. |
+| **PARSE_TEMPERATURE_FAILED** | Failed to parse a temperature command response. |
 
 ## Usage Examples
 
-Here's a few example of how to you may want to use MAPILib:
+If you'd like to see some usage examples of these methods, you can find them here:
 
-### Connect to a console
-```C#
-// Get the ip address of the console you'd like to connect to
-string ipAddress = "192.168.1.13";
-
-// Create an MAPI object
-MAPI api = new MAPI();
-
-// Try connecting to the console
-MAPIResult connectRes = api.Connect(ipAddress);
-
-// Check the result of the connect call
-if(connectRes != MAPIResult.OK) {
-    // If the MAPIResult returned by Connect() is not OK, connection must have failed
-    Console.WriteLine($"Failed to connect to {ipAddress}");
-    return;
-}
-
-Console.WriteLine($"Connected to {ipAddress}");
-```
-
-### Read / write memory
-
-```C#
-// Connect to a console
-...
-
-// Try getting the current process id
-uint? pid = api.GetCurrentProcessId();
-
-// Check the result of the get process id call
-if(pid == null) {
-    // If the returned process id is null, the call must have failed
-    // Note that it is nullable because a process id can actually be zero
-    Console.WriteLine("Failed to get the current process ID");
-    return;
-}
-
-Console.WriteLine($"Got current process ID {pid}");
-
-// Read four bytes of memory from the process
-uint address = 0x10000;
-uint size = 4;
-
-// Try reading from the process
-byte[]? readBuf = api.GetMemory(pid, address, size);
-
-// Check the result of the read call
-if(readBuf == null) {
-    // If the read buffer is null, the call must have failed
-    Console.WriteLine("Failed to read memory");
-    return;
-}
-
-Console.WriteLine($"Read {readBuf.Length} bytes of memory");
-
-// Write four bytes of memory to the process
-byte[] writeBuf = new byte[] { 0xDE, 0xAD, 0xBE, 0xEF }; // 🐄 -> 🍔 😔
-
-// Try writing to the process
-MAPIResult writeRes = api.SetMemory(pid, address, writeBuf);
-
-// Check the result of the write call
-if(writeRes != MAPIResult.OK) {
-    // If the call result is not OK, it must have failed
-    Console.WriteLine("Failed to write memory");
-    return;
-}
-
-Console.WriteLine("Wrote to memory");
-
-// We're done!
-```
-
-### Execute a syscall
-
-```C#
-// Connect to a console
-...
-
-// Execute a syscall to make the console's power button blink green
-uint syscall = 386; // sys_sm_control_led
-uint ledColor = 1;  // Green
-uint ledMode = 2;   // Blink fast
-
-object[] syscallArgs = new object[] { ledColor, ledMode };
-
-// Try executing the syscall
-uint? syscallRes = api.Syscall(syscall, syscallArgs);
-
-// Check the result of the syscall call
-if(syscallRes == null) {
-    Console.WriteLine("Failed to execute syscall");
-    return;
-}
-
-Console.WriteLine("Executed syscall");
-```
-
-### Get firmware version and temperature
-
-```C#
-// Connect to a console
-...
-
-// Try getting the console's firmware version
-string? firmwareVer = api.GetFirmwareVersion();
-
-// Check the result of the call
-if(firmwareVer == null) {
-    Console.WriteLine("Failed to get firmware version");
-    return;
-}
-
-Console.WriteLine($"Got firmware version {firmwareVer}");
-
-// Try getting the console's temperature
-MAPIResult temperatureRes = api.GetTemperature(out int cpu, out int rsx);
-
-// Check the result of the call
-if(temperatureRes != MAPIResult.OK) {
-    Console.WriteLine("Failed to get temperature");
-    return;
-}
-
-Console.WriteLine($"Console temperature cpu {cpu} rsx {rsx}");
-```
+[Usage Examples](/docs/EXAMPLES.md)

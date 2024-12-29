@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MAPILib
 {
-    public enum ResponseCode : int
+    internal enum ResponseCode : int
     {
         UNKNOWN = -1,
         OK_150 = 150,

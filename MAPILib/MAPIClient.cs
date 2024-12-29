@@ -1,27 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Net.Sockets;
-using System.Net.WebSockets;
+﻿using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace MAPILib
 {
+    /// <summary>
+    /// Enum describing the result of an MAPI operation state.
+    /// </summary>
     public enum MAPIResult
     {
+        /// <summary>
+        /// Operation completed successfully.
+        /// </summary>
         OK,
+        /// <summary>
+        /// Connect operation failed.
+        /// </summary>
         CONNECT_FAILED,
+        /// <summary>
+        /// Retrieval of a data socket for data operations failed.
+        /// </summary>
         GET_DATASOCKET_FAILED,
+        /// <summary>
+        /// Connection to a data socket for data operations failed.
+        /// </summary>
         CONNECT_DATASOCKET_FAILED,
+        /// <summary>
+        /// Failed to send a command to the host.
+        /// </summary>
         SEND_COMMAND_FAILED,
+        /// <summary>
+        /// Host returned an unexpected response code for a command.
+        /// </summary>
         WRONG_RESPONSE_CODE,
+        /// <summary>
+        /// Data socket failed to retrieve data buffer.
+        /// </summary>
         GET_RESPONSE_BUFFER_FAILED,
+        /// <summary>
+        /// Data socket failed to send data buffer.
+        /// </summary>
         DATASOCKET_SEND_FAILED,
+        /// <summary>
+        /// Failed to parse a process ID command response.
+        /// </summary>
         PARSE_PID_FAILED,
+        /// <summary>
+        /// Failed to parse a syscall command response.
+        /// </summary>
         PARSE_SYSCALL_FAILED,
+        /// <summary>
+        /// Failed to parse a temperature command response.
+        /// </summary>
         PARSE_TEMPERATURE_FAILED
     }
 
@@ -60,7 +90,7 @@ namespace MAPILib
             {
                 MainSocket.Send(cmdBuffer);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return false;
             }
@@ -83,7 +113,7 @@ namespace MAPILib
                 while (bytesReceived <= 0)
                     bytesReceived = MainSocket.Receive(responseBuffer);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return MAPIResponse.EmptyResponse();
             }
@@ -96,7 +126,7 @@ namespace MAPILib
                 responseString = responseString.Trim('\0');
                 responseString = responseString.Replace("\r\n", string.Empty);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return MAPIResponse.EmptyResponse();
             }
@@ -107,7 +137,7 @@ namespace MAPILib
             {
                 response = new MAPIResponse(responseString);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return MAPIResponse.EmptyResponse();
             }
@@ -131,7 +161,7 @@ namespace MAPILib
                 parsedHost = $"{matches[0].Value}.{matches[1].Value}.{matches[2].Value}.{matches[3].Value}";
                 parsedPort = ((int.Parse(matches[4].Value) * 256) + int.Parse(matches[5].Value));
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return false;
             }
@@ -186,7 +216,7 @@ namespace MAPILib
             {
                 dataSocket.Connect(host, port);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return false;
             }
@@ -234,7 +264,7 @@ namespace MAPILib
             {
                 MainSocket.Connect(host, port);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return MAPIResult.CONNECT_FAILED;
             }
@@ -281,7 +311,7 @@ namespace MAPILib
                 uint pid = uint.Parse(getPidResponse.Response);
                 processId = pid;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return MAPIResult.PARSE_PID_FAILED;
             }
@@ -292,7 +322,7 @@ namespace MAPILib
         public MAPIResult GetProcessIds(out uint[]? processIds)
         {
             // Default out params
-            processIds = default;
+            processIds = null;
 
             // Send command
             bool commandSent = SendCommand("PROCESS GETALLPID");
@@ -308,7 +338,7 @@ namespace MAPILib
             // Parse response
             List<uint> parsedPids = new List<uint>();
             string[] responsePidSplit = response.Response.Split('|');
-            for(int i = 0; i < responsePidSplit.Length; i++)
+            for (int i = 0; i < responsePidSplit.Length; i++)
             {
                 bool pidParsed = uint.TryParse(responsePidSplit[i], out uint pid);
                 if (!pidParsed)
@@ -390,7 +420,7 @@ namespace MAPILib
                 dataSocket.Send(buffer);
                 dataSocket.Close();
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return MAPIResult.DATASOCKET_SEND_FAILED;
             }
@@ -426,7 +456,7 @@ namespace MAPILib
                 ulong syscallResult = ulong.Parse(getSyscallResponse.Response);
                 result = syscallResult;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return MAPIResult.PARSE_SYSCALL_FAILED;
             }
@@ -437,7 +467,7 @@ namespace MAPILib
         public MAPIResult GetFirmwareVersion(out string? version)
         {
             // Default out params
-            version = default;
+            version = null;
 
             // Send command
             bool commandSent = SendCommand("PS3 GETFWVERSION");
@@ -456,11 +486,11 @@ namespace MAPILib
             return MAPIResult.OK;
         }
 
-        public MAPIResult GetTemperature(out int cpu, out int rsx)
+        public MAPIResult GetTemperature(out int? cpu, out int? rsx)
         {
             // Default out params
-            cpu = default;
-            rsx = default;
+            cpu = null;
+            rsx = null;
 
             // Send command
             bool commandSent = SendCommand("PS3 GETTEMP");
