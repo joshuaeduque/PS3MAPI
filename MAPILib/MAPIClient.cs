@@ -4,18 +4,54 @@ using System.Text.RegularExpressions;
 
 namespace MAPILib
 {
+    /// <summary>
+    /// Enum describing the result of an MAPI operation state.
+    /// </summary>
     public enum MAPIResult
     {
+        /// <summary>
+        /// Operation completed successfully.
+        /// </summary>
         OK,
+        /// <summary>
+        /// Connect operation failed.
+        /// </summary>
         CONNECT_FAILED,
+        /// <summary>
+        /// Retrieval of a data socket for data operations failed.
+        /// </summary>
         GET_DATASOCKET_FAILED,
+        /// <summary>
+        /// Connection to a data socket for data operations failed.
+        /// </summary>
         CONNECT_DATASOCKET_FAILED,
+        /// <summary>
+        /// Failed to send a command to the host.
+        /// </summary>
         SEND_COMMAND_FAILED,
+        /// <summary>
+        /// Host returned an unexpected response code for a command.
+        /// </summary>
         WRONG_RESPONSE_CODE,
+        /// <summary>
+        /// Data socket failed to retrieve data buffer.
+        /// </summary>
         GET_RESPONSE_BUFFER_FAILED,
+        /// <summary>
+        /// Data socket failed to send data buffer.
+        /// </summary>
         DATASOCKET_SEND_FAILED,
+        /// <summary>
+        /// Failed to parse a process ID command response.
+        /// </summary>
         PARSE_PID_FAILED,
+        /// <summary>
+        /// Failed to parse a syscall command response.
+        /// </summary>
         PARSE_SYSCALL_FAILED,
+        /// <summary>
+        /// Failed to parse a temperature command response.
+        /// </summary>
         PARSE_TEMPERATURE_FAILED
     }
 

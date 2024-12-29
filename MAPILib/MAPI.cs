@@ -1,23 +1,30 @@
 ﻿namespace MAPILib
 {
+    /// <summary>
+    /// Class for general MAPI host connection and operations.
+    /// </summary>
     public class MAPI
     {
         private const int DEFAULT_PORT = 7887;
 
         private readonly MAPIClient Client;
 
+        /// <summary>
+        /// State of connection to an MAPI host.
+        /// </summary>
         public bool Connected { get; private set; }
 
+        /// <summary>
+        /// Sole constructor for an MAPI object.
+        /// </summary>
         public MAPI()
         {
             Client = new MAPIClient();
             Connected = false;
         }
 
-        /// <summary>
-        /// Connect to an MAPI server host.
-        /// </summary>
-        /// <param name="host">The IP address of the MAPI server host</param>
+        /// <summary>Connect to an MAPI server host.</summary>
+        /// <param name="host">The IP address of the MAPI server host.</param>
         /// <param name="port">The port number of the MAPI server (7887 by default).</param>
         /// <returns>An MAPIResult for the API call.</returns>
         public MAPIResult Connect(string host, int port = DEFAULT_PORT)

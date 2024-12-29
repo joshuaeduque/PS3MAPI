@@ -1,5 +1,4 @@
 using MAPILib;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace WinFormsSample
@@ -62,7 +61,7 @@ namespace WinFormsSample
             api.GetFirmwareVersion(out string? firmwareVersion);
             firmwareVersionTextBox.Text = $"Firmware Version: {firmwareVersion ?? "N/A"}";
 
-            api.GetTemperature(out int cpu, out int rsx);
+            api.GetTemperature(out int? cpu, out int? rsx);
             cpuTemperatureLabel.Text = $"CPU Temperature: {cpu}";
             rsxTemperatureLabel.Text = $"RSX Temperature: {rsx}";
         }
