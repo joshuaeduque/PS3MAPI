@@ -486,6 +486,28 @@ namespace MAPILib
             return MAPIResult.OK;
         }
 
+        public MAPIResult GetFirmwareType(out string? fwtype)
+        {
+            // Default out params
+            fwtype = null;
+
+            // Send command
+            bool commandSent = SendCommand("PS3 GETFWTYPE");
+            if (!commandSent)
+                return MAPIResult.SEND_COMMAND_FAILED;
+
+            // Get response
+            MAPIResponse response = GetResponse();
+            if (response.Code != 200)
+                return MAPIResult.WRONG_RESPONSE_CODE;
+
+            // Assign out params
+            fwtype = response.Response;
+
+            // Return ok
+            return MAPIResult.OK;
+        }
+
         public MAPIResult GetTemperature(out int? cpu, out int? rsx)
         {
             // Default out params

@@ -180,6 +180,19 @@
             return version;
         }
 
+        public MAPIResult GetFirmwareType(out string? fwtype)
+        {
+            MAPIResult result = Client.GetFirmwareType(out string? outFwtype);
+            fwtype = outFwtype;
+            return result;
+        }
+
+        public string? GetFirmwareType()
+        {
+            GetFirmwareType(out string? fwtype);
+            return fwtype;
+        }
+
         /// <summary>
         /// Get the CPU and RSX temperature of the host.
         /// </summary>
