@@ -55,20 +55,45 @@ namespace MAPILib
         PARSE_TEMPERATURE_FAILED
     }
 
-    // NOTE values from PS3 syscalls wiki
+    /// <summary>
+    /// Possible power LED colors for syscall 386.
+    /// </summary>
     public enum LEDColor
     {
+        /// <summary>
+        /// Solid red color.
+        /// </summary>
         Red = 0,
+        /// <summary>
+        /// Solid green color.
+        /// </summary>
         Green = 1,
+        /// <summary>
+        /// Red and green colors combined (limited to some consoles).
+        /// </summary>
         Yellow = 2
     }
 
-    // NOTE values from PS3 syscalls wiki
+    /// <summary>
+    /// Possible power LED modes for syscall 386.
+    /// </summary>
     public enum LEDMode
     {
+        /// <summary>
+        /// Power LED off.
+        /// </summary>
         Off = 0,
+        /// <summary>
+        /// Power LED on.
+        /// </summary>
         On = 1,
+        /// <summary>
+        /// Blink power LED quickly.
+        /// </summary>
         BlinkFast = 2,
+        /// <summary>
+        /// Blink power LED slowly.
+        /// </summary>
         BlinkSlow = 3
     }
 
