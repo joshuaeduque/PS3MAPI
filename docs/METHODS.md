@@ -1,6 +1,6 @@
-# MAPILib Methods
+# MAPI Methods
 
-Created by [mddox](https://github.com/loxsmoke/mddox) on 12/28/2024
+Created by [mddox](https://github.com/loxsmoke/mddox) on 1/2/2025
 
 MAPILib provides two types of methods for most operations:
 
@@ -15,7 +15,35 @@ Convenience methods are useful if you're only concerned with success / failure. 
 
 |   |   |   |
 |---|---|---|
-| [MAPI Class](#mapi-class) | [MAPIResult Enum](#mapiresult-enum) |   |
+| [LEDColor Enum](#ledcolor-enum) | [LEDMode Enum](#ledmode-enum) | [MAPI Class](#mapi-class) |
+| [MAPIResult Enum](#mapiresult-enum) |   |   |
+# LEDColor Enum
+
+Namespace: MAPILib
+
+Possible power LED colors for syscall 386.
+
+## Values
+
+| Name | Summary |
+|---|---|
+| **Red** | Solid red color. |
+| **Green** | Solid green color. |
+| **Yellow** | Red and green colors combined (limited to some consoles). |
+# LEDMode Enum
+
+Namespace: MAPILib
+
+Possible power LED modes for syscall 386.
+
+## Values
+
+| Name | Summary |
+|---|---|
+| **Off** | Power LED off. |
+| **On** | Power LED on. |
+| **BlinkFast** | Blink power LED quickly. |
+| **BlinkSlow** | Blink power LED slowly. |
 # MAPI Class
 
 Namespace: MAPILib
@@ -36,10 +64,13 @@ Class for general MAPI host connection and operations.
 
 | Name | Returns | Summary |
 |---|---|---|
+| [Buzzer(int mode)](#buzzerint-mode) | [MAPIResult](#mapiresult-enum) | Sound the buzzer of the host. |
 | [Connect(string host, int port)](#connectstring-host-int-port) | [MAPIResult](#mapiresult-enum) | Connect to an MAPI server host. |
 | [Disconnect()](#disconnect) | void | Disconnect from the host. |
 | [GetCurrentProcessId()](#getcurrentprocessid) | uint? | Get the currently running process ID of the host. |
 | [GetCurrentProcessId(out uint? processId)](#getcurrentprocessidout-uint--processid) | [MAPIResult](#mapiresult-enum) | Get the currently running process ID of the host. |
+| [GetFirmwareType()](#getfirmwaretype) | string | Get the firmware type of the host. |
+| [GetFirmwareType(out string fwtype)](#getfirmwaretypeout-string-fwtype) | [MAPIResult](#mapiresult-enum) | Get the firmware type of the host. |
 | [GetFirmwareVersion()](#getfirmwareversion) | string | Get the firmware version of the host. |
 | [GetFirmwareVersion(out string version)](#getfirmwareversionout-string-version) | [MAPIResult](#mapiresult-enum) | Get the firmware version of the host. |
 | [GetMemory(uint processId, uint address, uint size)](#getmemoryuint-processid-uint-address-uint-size) | byte[] | Read an array of bytes from a host process. |
@@ -48,6 +79,9 @@ Class for general MAPI host connection and operations.
 | [GetProcessIds(out uint[] processIds)](#getprocessidsout-uint-processids) | [MAPIResult](#mapiresult-enum) | Get an array of running process IDs on the host. |
 | [GetTemperature()](#gettemperature) | (int? cpu, int? rsx) | Get the CPU and RSX temperature of the host. |
 | [GetTemperature(out int? cpu, out int? rsx)](#gettemperatureout-int--cpu-out-int--rsx) | [MAPIResult](#mapiresult-enum) | Get the CPU and RSX temperature of the host. |
+| [LED(LEDColor color, LEDMode mode)](#ledledcolor-color-ledmode-mode) | [MAPIResult](#mapiresult-enum) | Set the LED color and mode of the host. |
+| [Notify(string message)](#notifystring-message) | [MAPIResult](#mapiresult-enum) | Send a notification bubble to the host with the default icon and sound. |
+| [Notify(string message, int icon, int sound)](#notifystring-message-int-icon-int-sound) | [MAPIResult](#mapiresult-enum) | Send a notification bubble to the host. |
 | [SetMemory(uint processId, uint address, byte[] buffer)](#setmemoryuint-processid-uint-address-byte-buffer) | [MAPIResult](#mapiresult-enum) | Write an array of bytes into a host process. |
 | [Syscall(uint number, Object[] args)](#syscalluint-number-object-args) | ulong? | Execute a syscall on the host. |
 | [Syscall(uint number, Object[] args, out ulong? result)](#syscalluint-number-object-args-out-ulong--result) | [MAPIResult](#mapiresult-enum) | Execute a syscall on the host. |
@@ -60,6 +94,21 @@ Sole constructor for an MAPI object.
 
 
 ## Methods
+
+### Buzzer(int mode)
+
+Sound the buzzer of the host.
+
+| Parameter | Type | Description |
+|---|---|---|
+| mode | int | The buzzer sound to make. |
+
+
+### Returns
+
+[MAPIResult](#mapiresult-enum)
+
+
 
 ### Connect(string host, int port)
 
@@ -75,7 +124,7 @@ Connect to an MAPI server host.
 
 [MAPIResult](#mapiresult-enum)
 
-An MAPIResult for the API call.
+
 
 ### Disconnect()
 
@@ -108,7 +157,34 @@ Get the currently running process ID of the host.
 
 [MAPIResult](#mapiresult-enum)
 
-An MAPIResult for the API call.
+
+
+### GetFirmwareType()
+
+Get the firmware type of the host.
+
+
+
+### Returns
+
+string
+
+A string containing the host's firmware type or null upon failure.
+
+### GetFirmwareType(out string fwtype)
+
+Get the firmware type of the host.
+
+| Parameter | Type | Description |
+|---|---|---|
+| fwtype | out string | A string containing the host's firmware type or null upon failure. |
+
+
+### Returns
+
+[MAPIResult](#mapiresult-enum)
+
+
 
 ### GetFirmwareVersion()
 
@@ -135,7 +211,7 @@ Get the firmware version of the host.
 
 [MAPIResult](#mapiresult-enum)
 
-An MAPIResult for the API call.
+
 
 ### GetMemory(uint processId, uint address, uint size)
 
@@ -170,7 +246,7 @@ Read an array of bytes from a host process.
 
 [MAPIResult](#mapiresult-enum)
 
-An MAPIResult for the API call.
+
 
 ### GetProcessIds()
 
@@ -197,7 +273,7 @@ Get an array of running process IDs on the host.
 
 [MAPIResult](#mapiresult-enum)
 
-An MAPIResult for the API call.
+
 
 ### GetTemperature()
 
@@ -225,7 +301,55 @@ Get the CPU and RSX temperature of the host.
 
 [MAPIResult](#mapiresult-enum)
 
-An MAPIResult for the API call.
+
+
+### LED(LEDColor color, LEDMode mode)
+
+Set the LED color and mode of the host.
+
+| Parameter | Type | Description |
+|---|---|---|
+| color | [LEDColor](#ledcolor-enum) |  |
+| mode | [LEDMode](#ledmode-enum) |  |
+
+
+### Returns
+
+[MAPIResult](#mapiresult-enum)
+
+
+
+### Notify(string message)
+
+Send a notification bubble to the host with the default icon and sound.
+
+| Parameter | Type | Description |
+|---|---|---|
+| message | string | The notification message. |
+
+
+### Returns
+
+[MAPIResult](#mapiresult-enum)
+
+
+
+### Notify(string message, int icon, int sound)
+
+Send a notification bubble to the host.
+
+| Parameter | Type | Description |
+|---|---|---|
+| message | string | The notification message. |
+| icon | int | The notification icon. |
+| sound | int | The notification sound. |
+
+
+### Returns
+
+[MAPIResult](#mapiresult-enum)
+
+
 
 ### SetMemory(uint processId, uint address, byte[] buffer)
 
@@ -242,7 +366,7 @@ Write an array of bytes into a host process.
 
 [MAPIResult](#mapiresult-enum)
 
-An MAPIResult for the API call.
+
 
 ### Syscall(uint number, Object[] args)
 
@@ -275,7 +399,7 @@ Execute a syscall on the host.
 
 [MAPIResult](#mapiresult-enum)
 
-An MAPIResult for the API call.
+
 
 # MAPIResult Enum
 

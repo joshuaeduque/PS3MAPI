@@ -26,7 +26,7 @@
         /// <summary>Connect to an MAPI server host.</summary>
         /// <param name="host">The IP address of the MAPI server host.</param>
         /// <param name="port">The port number of the MAPI server (7887 by default).</param>
-        /// <returns>An MAPIResult for the API call.</returns>
+        /// <returns></returns>
         public MAPIResult Connect(string host, int port = DEFAULT_PORT)
         {
             MAPIResult connectResult = Client.Connect(host, port);
@@ -50,7 +50,7 @@
         /// Get the currently running process ID of the host.
         /// </summary>
         /// <param name="processId">A uint of the currently running process ID on the host or null upon failure.</param>
-        /// <returns>An MAPIResult for the API call.</returns>
+        /// <returns></returns>
         public MAPIResult GetCurrentProcessId(out uint? processId)
         {
             MAPIResult getProcIdResult = Client.GetCurrentProcessId(out uint? outProcessId);
@@ -72,7 +72,7 @@
         /// Get an array of running process IDs on the host.
         /// </summary>
         /// <param name="processIds">An array of uints containing process IDs running on the host or null upon failure.</param>
-        /// <returns>An MAPIResult for the API call.</returns>
+        /// <returns></returns>
         public MAPIResult GetProcessIds(out uint[]? processIds)
         {
             MAPIResult result = Client.GetProcessIds(out uint[]? outProcessIds);
@@ -97,7 +97,7 @@
         /// <param name="address">The address in the process.</param>
         /// <param name="size">The number of bytes to read.</param>
         /// <param name="buffer">A byte array containing memory read from the process or null upon failure.</param>
-        /// <returns>An MAPIResult for the API call.</returns>
+        /// <returns></returns>
         public MAPIResult GetMemory(uint processId, uint address, uint size, out byte[]? buffer)
         {
             MAPIResult getMemoryResult = Client.GetMemory(processId, address, size, out byte[]? outBuffer);
@@ -124,7 +124,7 @@
         /// <param name="processId">The ID of the process.</param>
         /// <param name="address">The address in the process.</param>
         /// <param name="buffer">The array of bytes to write.</param>
-        /// <returns>An MAPIResult for the API call.</returns>
+        /// <returns></returns>
         public MAPIResult SetMemory(uint processId, uint address, byte[] buffer)
         {
             MAPIResult setMemoryResult = Client.SetMemory(processId, address, buffer);
@@ -137,7 +137,7 @@
         /// <param name="number">The syscall number.</param>
         /// <param name="args">The arguments of the syscall.</param>
         /// <param name="result">A ulong of the syscall's execution return value or null upon failure.</param>
-        /// <returns>An MAPIResult for the API call.</returns>
+        /// <returns></returns>
         public MAPIResult Syscall(uint number, object[] args, out ulong? result)
         {
             MAPIResult syscallResult = Client.Syscall(number, args, out ulong? outResult);
@@ -162,7 +162,7 @@
         /// Get the firmware version of the host.
         /// </summary>
         /// <param name="version">A string containing the host's firmware version or null upon failure.</param>
-        /// <returns>An MAPIResult for the API call.</returns>
+        /// <returns></returns>
         public MAPIResult GetFirmwareVersion(out string? version)
         {
             MAPIResult result = Client.GetFirmwareVersion(out string? outVersion);
@@ -180,12 +180,36 @@
             return version;
         }
 
+        // UNTESTED
+        /// <summary>
+        /// Get the firmware type of the host.
+        /// </summary>
+        /// <param name="fwtype">A string containing the host's firmware type or null upon failure.</param>
+        /// <returns></returns>
+        public MAPIResult GetFirmwareType(out string? fwtype)
+        {
+            MAPIResult result = Client.GetFirmwareType(out string? outFwtype);
+            fwtype = outFwtype;
+            return result;
+        }
+
+        // UNTESTED
+        /// <summary>
+        /// Get the firmware type of the host.
+        /// </summary>
+        /// <returns>A string containing the host's firmware type or null upon failure.</returns>
+        public string? GetFirmwareType()
+        {
+            GetFirmwareType(out string? fwtype);
+            return fwtype;
+        }
+
         /// <summary>
         /// Get the CPU and RSX temperature of the host.
         /// </summary>
         /// <param name="cpu"></param>
         /// <param name="rsx"></param>
-        /// <returns>An MAPIResult for the API call.</returns>
+        /// <returns></returns>
         public MAPIResult GetTemperature(out int? cpu, out int? rsx)
         {
             MAPIResult result = Client.GetTemperature(out int? cpuResult, out int? rsxResult);
@@ -202,6 +226,58 @@
         {
             GetTemperature(out int? cpuResult, out int? rsxResult);
             return (cpu: cpuResult, rsx: rsxResult);
+        }
+
+        // UNTESTED
+        /// <summary>
+        /// Send a notification bubble to the host with the default icon and sound.
+        /// </summary>
+        /// <param name="message">The notification message.</param>
+        /// <returns></returns>
+        public MAPIResult Notify(string message)
+        {
+            // TODO check the default sound and icon params
+            MAPIResult result = Client.Notify(message, 0, 0);
+            return result;
+        }
+
+        // UNTESTED
+        /// <summary>
+        /// Send a notification bubble to the host.
+        /// </summary>
+        /// <param name="message">The notification message.</param>
+        /// <param name="icon">The notification icon.</param>
+        /// <param name="sound">The notification sound.</param>
+        /// <returns></returns>
+        public MAPIResult Notify(string message, int icon, int sound)
+        {
+            MAPIResult result = Client.Notify(message, icon, sound);
+            return result;
+        }
+
+        // UNTESTED
+        /// <summary>
+        /// Sound the buzzer of the host.
+        /// </summary>
+        /// <param name="mode">The buzzer sound to make.</param>
+        /// <returns></returns>
+        public MAPIResult Buzzer(int mode)
+        {
+            MAPIResult result = Client.Buzzer(mode);
+            return result;
+        }
+
+        // UNTESTED
+        /// <summary>
+        /// Set the LED color and mode of the host.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="mode"></param>
+        /// <returns></returns>
+        public MAPIResult LED(LEDColor color, LEDMode mode)
+        {
+            MAPIResult result = Client.LED(color, mode);
+            return result;
         }
     }
 }

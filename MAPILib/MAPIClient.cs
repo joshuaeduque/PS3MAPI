@@ -55,6 +55,48 @@ namespace MAPILib
         PARSE_TEMPERATURE_FAILED
     }
 
+    /// <summary>
+    /// Possible power LED colors for syscall 386.
+    /// </summary>
+    public enum LEDColor
+    {
+        /// <summary>
+        /// Solid red color.
+        /// </summary>
+        Red = 0,
+        /// <summary>
+        /// Solid green color.
+        /// </summary>
+        Green = 1,
+        /// <summary>
+        /// Red and green colors combined (limited to some consoles).
+        /// </summary>
+        Yellow = 2
+    }
+
+    /// <summary>
+    /// Possible power LED modes for syscall 386.
+    /// </summary>
+    public enum LEDMode
+    {
+        /// <summary>
+        /// Power LED off.
+        /// </summary>
+        Off = 0,
+        /// <summary>
+        /// Power LED on.
+        /// </summary>
+        On = 1,
+        /// <summary>
+        /// Blink power LED quickly.
+        /// </summary>
+        BlinkFast = 2,
+        /// <summary>
+        /// Blink power LED slowly.
+        /// </summary>
+        BlinkSlow = 3
+    }
+
     internal class MAPIClient
     {
         private Socket MainSocket;
@@ -486,6 +528,29 @@ namespace MAPILib
             return MAPIResult.OK;
         }
 
+        // UNTESTED
+        public MAPIResult GetFirmwareType(out string? fwtype)
+        {
+            // Default out params
+            fwtype = null;
+
+            // Send command
+            bool commandSent = SendCommand("PS3 GETFWTYPE");
+            if (!commandSent)
+                return MAPIResult.SEND_COMMAND_FAILED;
+
+            // Get response
+            MAPIResponse response = GetResponse();
+            if (response.Code != 200)
+                return MAPIResult.WRONG_RESPONSE_CODE;
+
+            // Assign out params
+            fwtype = response.Response;
+
+            // Return ok
+            return MAPIResult.OK;
+        }
+
         public MAPIResult GetTemperature(out int? cpu, out int? rsx)
         {
             // Default out params
@@ -510,6 +575,61 @@ namespace MAPILib
             // Assign out params
             cpu = parsedCpu;
             rsx = parsedRsx;
+
+            // Return ok
+            return MAPIResult.OK;
+        }
+
+        // UNTESTED
+        // TODO create enums for icon and sound values
+        public MAPIResult Notify(string message, int icon, int sound)
+        {
+            // Send command
+            bool commandSent = SendCommand($"PS3 NOTIFY {message}&icon={icon}&snd={sound}");
+            if (!commandSent)
+                return MAPIResult.SEND_COMMAND_FAILED;
+
+            // Get response
+            MAPIResponse response = GetResponse();
+            if (response.Code != 200)
+                return MAPIResult.WRONG_RESPONSE_CODE;
+
+            // Return ok
+            return MAPIResult.OK;
+        }
+
+        // UNTESTED
+        // TODO research buzzer syscall and create enum from possible values
+        public MAPIResult Buzzer(int mode)
+        {
+            // Send command
+            bool commandSent = SendCommand($"PS3 BUZZER{mode}");
+            if (!commandSent)
+                return MAPIResult.SEND_COMMAND_FAILED;
+
+            // Get response
+            MAPIResponse response = GetResponse();
+            if (response.Code != 200)
+                return MAPIResult.WRONG_RESPONSE_CODE;
+
+            // Return ok
+            return MAPIResult.OK;
+        }
+
+        // UNTESTED
+        // TODO create enums for the color and mode values
+        public MAPIResult LED(LEDColor color, LEDMode mode)
+        {
+            // Send command
+            // NOTE MAPI server parses color and mode in command as u64
+            bool commandSent = SendCommand($"PS3 LED {(uint)color} {(uint)mode}");
+            if (!commandSent)
+                return MAPIResult.SEND_COMMAND_FAILED;
+
+            // Get response
+            MAPIResponse response = GetResponse();
+            if (response.Code != 200)
+                return MAPIResult.WRONG_RESPONSE_CODE;
 
             // Return ok
             return MAPIResult.OK;
