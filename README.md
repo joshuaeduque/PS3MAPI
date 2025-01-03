@@ -14,19 +14,19 @@ MAPILib is an open source implementation of the PlayStation 3 Manager API as a C
 ### Usage Example
 Here's a quick example showing how easy it is to develop applications using MAPILib. In this example, we'll connect to a console and read some memory from the currently running process.
 ```C#
-// Get the ip address of the console you'd like to connect to
+// Get the address of the console you'd like to connect to
 string ipAddress = "192.168.1.13";
 
 // Create an MAPI object 
 MAPI api = new MAPI();
 
-// Connect the api to the console with the ip address
+// Connect to the console
 api.Connect(ipAddress);
 
-// Get the current process id
+// Get the id of the currently running process
 uint? pid = api.GetCurrentProcessId();
 
-// Read four bytes from the current process
+// Read four bytes from the process
 uint address = 0x10000;
 uint size = 4;
 
