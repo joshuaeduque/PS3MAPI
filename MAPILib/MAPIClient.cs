@@ -486,6 +486,7 @@ namespace MAPILib
             return MAPIResult.OK;
         }
 
+        // UNTESTED
         public MAPIResult GetFirmwareType(out string? fwtype)
         {
             // Default out params
@@ -536,5 +537,24 @@ namespace MAPILib
             // Return ok
             return MAPIResult.OK;
         }
+
+        // UNTESTED
+        public MAPIResult Notify(string message, int icon, int sound)
+        {
+            // Send command
+            bool commandSent = SendCommand($"PS3 NOTIFY {message}&icon={icon}&snd={sound}");
+            if (!commandSent)
+                return MAPIResult.SEND_COMMAND_FAILED;
+
+            // Get response
+            MAPIResponse response = GetResponse();
+            if (response.Code != 200)
+                return MAPIResult.WRONG_RESPONSE_CODE;
+
+            // Return ok
+            return MAPIResult.OK;
+        }
+
+
     }
 }

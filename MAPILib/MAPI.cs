@@ -180,6 +180,7 @@
             return version;
         }
 
+        // UNTESTED
         public MAPIResult GetFirmwareType(out string? fwtype)
         {
             MAPIResult result = Client.GetFirmwareType(out string? outFwtype);
@@ -187,6 +188,7 @@
             return result;
         }
 
+        // UNTESTED
         public string? GetFirmwareType()
         {
             GetFirmwareType(out string? fwtype);
@@ -215,6 +217,21 @@
         {
             GetTemperature(out int? cpuResult, out int? rsxResult);
             return (cpu: cpuResult, rsx: rsxResult);
+        }
+
+        // UNTESTED
+        public MAPIResult Notify(string message)
+        {
+            // TODO check the default sound and icon params
+            MAPIResult result = Client.Notify(message, 0, 0);
+            return result;
+        }
+
+        // UNTESTED
+        public MAPIResult Notify(string message, int icon, int sound)
+        {
+            MAPIResult result = Client.Notify(message, icon, sound);
+            return result;
         }
     }
 }
