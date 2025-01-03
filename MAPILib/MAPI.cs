@@ -242,7 +242,7 @@
         }
 
         // UNTESTED
-        public MAPIResult LED(uint color, uint mode)
+        public MAPIResult LED(LEDColor color, LEDMode mode)
         {
             MAPIResult result = Client.LED(color, mode);
             return result;

@@ -55,6 +55,23 @@ namespace MAPILib
         PARSE_TEMPERATURE_FAILED
     }
 
+    // NOTE values from PS3 syscalls wiki
+    public enum LEDColor
+    {
+        Red = 0,
+        Green = 1,
+        Yellow = 2
+    }
+
+    // NOTE values from PS3 syscalls wiki
+    public enum LEDMode
+    {
+        Off = 0,
+        On = 1,
+        BlinkFast = 2,
+        BlinkSlow = 3
+    }
+
     internal class MAPIClient
     {
         private Socket MainSocket;
@@ -557,7 +574,7 @@ namespace MAPILib
         }
 
         // UNTESTED
-        // TODO create enum for mode values
+        // TODO research buzzer syscall and create enum from possible values
         public MAPIResult Buzzer(int mode)
         {
             // Send command
@@ -576,10 +593,11 @@ namespace MAPILib
 
         // UNTESTED
         // TODO create enums for the color and mode values
-        public MAPIResult LED(uint color, uint mode)
+        public MAPIResult LED(LEDColor color, LEDMode mode)
         {
             // Send command
-            bool commandSent = SendCommand($"PS3 LED {color} {mode}");
+            // NOTE MAPI server parses color and mode in command as u64
+            bool commandSent = SendCommand($"PS3 LED {(uint)color} {(uint)mode}");
             if (!commandSent)
                 return MAPIResult.SEND_COMMAND_FAILED;
 
