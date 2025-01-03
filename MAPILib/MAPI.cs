@@ -240,5 +240,12 @@
             MAPIResult result = Client.Buzzer(mode);
             return result;
         }
+
+        // UNTESTED
+        public MAPIResult LED(uint color, uint mode)
+        {
+            MAPIResult result = Client.LED(color, mode);
+            return result;
+        }
     }
 }

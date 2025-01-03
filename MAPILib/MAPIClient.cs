@@ -539,6 +539,7 @@ namespace MAPILib
         }
 
         // UNTESTED
+        // TODO create enums for icon and sound values
         public MAPIResult Notify(string message, int icon, int sound)
         {
             // Send command
@@ -556,10 +557,29 @@ namespace MAPILib
         }
 
         // UNTESTED
+        // TODO create enum for mode values
         public MAPIResult Buzzer(int mode)
         {
             // Send command
             bool commandSent = SendCommand($"PS3 BUZZER{mode}");
+            if (!commandSent)
+                return MAPIResult.SEND_COMMAND_FAILED;
+
+            // Get response
+            MAPIResponse response = GetResponse();
+            if (response.Code != 200)
+                return MAPIResult.WRONG_RESPONSE_CODE;
+
+            // Return ok
+            return MAPIResult.OK;
+        }
+
+        // UNTESTED
+        // TODO create enums for the color and mode values
+        public MAPIResult LED(uint color, uint mode)
+        {
+            // Send command
+            bool commandSent = SendCommand($"PS3 LED {color} {mode}");
             if (!commandSent)
                 return MAPIResult.SEND_COMMAND_FAILED;
 
