@@ -233,5 +233,12 @@
             MAPIResult result = Client.Notify(message, icon, sound);
             return result;
         }
+
+        // UNTESTED
+        public MAPIResult Buzzer(int mode)
+        {
+            MAPIResult result = Client.Buzzer(mode);
+            return result;
+        }
     }
 }
