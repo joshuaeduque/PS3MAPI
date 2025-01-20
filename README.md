@@ -2,7 +2,9 @@
 PS3MAPI is a repository for the MAPILib C# library and some documentation / sample applications.
 
 ## MAPILib
-MAPILib is an open source implementation of the PlayStation 3 Manager API as a C# library. It functions by communicating over a network with the internal MAPI server provided by webMAN MOD which comes stock with nearly every modern custom firmware. This means that users do not have to install or configure additional software to make use of tools developed with MAPILib.
+MAPILib is an open source implementation of the PlayStation 3 Manager API as a C# library. 
+
+It functions by communicating over a network with the internal MAPI server provided by webMAN MOD which comes stock with nearly every modern custom firmware. This means that users do not have to install or configure additional software to make use of tools developed with MAPILib.
 
 **Library Features**
 * Read / write process memory
