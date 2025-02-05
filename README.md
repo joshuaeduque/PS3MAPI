@@ -27,7 +27,7 @@ PS3MAPI requires you to have Visual Studio installed on your machine.
 
 The recommend way to build PS3MAPI is to simply open the solution in Visual Studio and build for `Debug` or `Release`.
 
-However, it is possible to possible to build the project from a `Developer Command Prompt` like so.
+However, it is possible to build the project from a `Developer Command Prompt` like so.
 
 1. Clone the repository.
 
@@ -66,10 +66,11 @@ api.Connect(ipAddress);
 // Get the id of the currently running process
 uint? pid = api.GetCurrentProcessId();
 
-// Read four bytes from the process
+// Determine the address and number of bytes to read 
 uint address = 0x10000;
 uint size = 4;
 
+// Read four bytes from the process
 byte[]? memory = api.GetMemory(pid, address, size);
 ```
 
