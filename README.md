@@ -1,20 +1,58 @@
-# PS3MAPI
-PS3MAPI is a repository for the MAPILib C# library and some documentation / sample applications.
+## About PS3MAPI
+PS3MAPI is a Visual Studio project containing MAPILib, an open source implementation of the PlayStation 3 Manager API in .NET C#.
 
-## MAPILib
-MAPILib is an open source implementation of the PlayStation 3 Manager API as a C# library. 
+By communicating with a console's internal MAPI server with C# sockets, MAPILib is able to send commands and parse their responses to manipulate a console over a network connection. 
 
-It functions by communicating over a network with the internal MAPI server provided by webMAN MOD which comes stock with nearly every modern custom firmware. This means that users do not have to install or configure additional software to make use of tools developed with MAPILib.
+As the MAPI server is provided by webMAN MOD which comes stock with every modern custom firmware, users and developers do not have to configure additional software to make use of MAPILib's functionality.
 
-**Library Features**
+### Built With
+
+![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white) ![.Net](https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white) ![Visual Studio](https://img.shields.io/badge/Visual%20Studio-5C2D91.svg?style=for-the-badge&logo=visual-studio&logoColor=white)
+
+### Features
+
 * Read / write process memory
-* Get process info.
 * Execute syscalls
-* Read CPU / RSX temperature
-* Get firmware version
+* Fetch process information
+* Fetch CPU / RSX temperatures
+* Fetch firmware versions
 
-### Usage Example
-Here's a quick example showing how easy it is to develop applications using MAPILib. In this example, we'll connect to a console and read some memory from the currently running process.
+## Getting Started
+
+### Preqrequisites
+
+PS3MAPI requires you to have Visual Studio installed on your machine.
+
+### Building
+
+The recommend way to build PS3MAPI is to simply open the solution in Visual Studio and build for `Debug` or `Release`.
+
+However, it is possible to possible to build the project from a `Developer Command Prompt` like so.
+
+1. Clone the repository.
+
+```bash
+git clone https://github.com/joshuaeduque/PS3MAPI.git PS3MAPI
+```
+
+2. Navigate to the cloned project directory.
+
+```bash
+cd PS3MAPI
+```
+
+3. Build the solution using `msbuild`
+
+```bash
+msbuild
+```
+
+## Usage
+
+Building the solution should produce an `MAPILib.dll` file that you can include as a dependency in your C# projects.
+
+Here is a simple example showing how to connect to a console and read some memory from a process:
+
 ```C#
 // Get the address of the console you'd like to connect to
 string ipAddress = "192.168.1.13";
@@ -36,7 +74,17 @@ byte[]? memory = api.GetMemory(pid, address, size);
 ```
 
 ### Documentation
-If you'd like to learn more about using MAPILib, you can find some documentation here:
 
-* [MAPI Methods](/docs/METHODS.md)
-* [Usage Examples](/docs/EXAMPLES.md)
+If you would like to learn more about using MAPILib, you can find some documentation here:
+
+[MAPI Methods](/docs/METHODS.md)
+
+[Usage Examples](/docs/EXAMPLES.md)
+
+## License
+
+Distrubuted under the GNU General Public License v3.0. See `LICENSE` for more information.
+
+## Contact
+
+Joshua Duque - joshuaeduque@gmail.com
